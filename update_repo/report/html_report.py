@@ -88,14 +88,14 @@ class HtmlReport(object):
   def __create_repo_panel_head(self, label, path):
     with self.__tag('div', klass='panel-heading'):
       self.__text(label)
-      with self.__tag('span', ("data-toggle", "collapse"), ("data-target", "#{}".format(self.__create_id(path))),  klass="glyphicon glyphicon-chevron-down"):
+      with self.__tag('span', ("data-toggle", "collapse"), ("data-target", "#{}".format(self.__create_id(label))),  klass="glyphicon glyphicon-chevron-down"):
         self.__text('')
       # end
     # end
   # end
 
-  def __create_repo_panel_body(self, path, message):
-    with self.__tag('div', klass='panel-body repo collapse', id='{}'.format(self.__create_id(path))):
+  def __create_repo_panel_body(self, label, message):
+    with self.__tag('div', klass='panel-body repo collapse', id='{}'.format(self.__create_id(label))):
      
       if type(message) is list:
         with self.__tag('ul', klass='list-group'):
@@ -114,7 +114,7 @@ class HtmlReport(object):
 
     with self.__tag('div', klass='panel ' + panelStatus):
       self.__create_repo_panel_head(repo['label'], repo['path'])
-      self.__create_repo_panel_body(repo['path'], repo['message'])
+      self.__create_repo_panel_body(repo['label'], repo['message'])
     # end
   # end
 
