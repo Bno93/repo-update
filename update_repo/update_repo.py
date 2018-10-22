@@ -5,8 +5,8 @@ import subprocess
 import webbrowser
 import time
 
-
-from html_report import HtmlReport
+from setting import Settings
+from report import HtmlReport
 from pprint import pprint
 
 
@@ -75,64 +75,14 @@ def update_repos(label, path, vcs, exec_path):
 # end
 
 
-def default_settings():
-    """ create default settings file """
-
-    default = {
-        "execpath": ".",
-        "toUpdate": [
-            {
-                "label": "Git Repo",
-                "folder": "",
-                "vcs": {
-                    "program": "git",
-                    "command": "pull"
-                },
-                "enabled": True
-            },
-            {
-                "label": "Svn Repo",
-                "folder": "",
-                "vcs": {
-                    "program": "svn",
-                    "command": "update"
-                },
-                "enabled": True
-            },
-        ]
-    }
-
-    with open('.\\settings.json', 'w') as default_settings:
-        json.dump(default, default_settings)
-    # end
-
-    default_settings.closed
-# end
-
-
-
-def load_settings():
-    loaded_settings = {}
-    try:
-        with open('.\\settings.json', 'r') as settings_file:
-            loaded_settings = json.load(settings_file)
-        # end
-
-        settings_file.closed
-    except IOError:
-        default_settings()
-        return load_settings()
-    # end
-    return loaded_settings
-# end
-
-
 def main():
     """ Main Function """
 
-    settings = load_settings()
+    settings = Settings() 
 
-    updateList = settings['toUpdate']
+    loaded_settings = settings.load_settings()
+
+    updateList = loaded_settings['toUpdate']
     report = {
         'repos': []
     }
@@ -141,7 +91,7 @@ def main():
             if(repo['enabled']):
                 vcs = repo['vcs']
                 result = update_repos(repo['label'],
-                    repo['folder'], vcs, settings['execpath'])
+                    repo['folder'], vcs, loaded_settings['execpath'])
                 report['repos'].append(result)
             else:
                 repo = {
@@ -159,10 +109,10 @@ def main():
 
     report_filename = 'report.html'
 
-    with open('.\\' + report_filename, 'w') as report_file:
+    with open(settings.settings_dir + '\\' + report_filename, 'w') as report_file:
         report_file.write(html_report.get_html_report())
     # end
-    report_file = 'file:///' + os.getcwd() + '\\' + report_filename
+    report_file = 'file:///' + settings.settings_dir + '\\' + report_filename
     webbrowser.open_new_tab(report_file)
     # input() # for debug use
     sys.exit(0)
