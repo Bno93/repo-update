@@ -5,13 +5,13 @@ import time
 
 from setting import Settings
 from updater import Updater
+from ui import SystemTray
 from report import HtmlReport
 from pprint import pprint
 
 
-
 # TODO
-# update status adequat feststellen und 
+# update status adequat feststellen und
 # SystemTray Ui fuer Windows https://stackoverflow.com/questions/9494739/how-to-build-a-systemtray-app-for-windows
 
 
@@ -32,7 +32,7 @@ def main():
             if(repo['enabled']):
                 vcs = repo['vcs']
                 result = updater.update(repo['label'],
-                    repo['folder'], vcs, loaded_settings['execpath'])
+                                        repo['folder'], vcs, loaded_settings['execpath'])
                 report['repos'].append(result)
             else:
                 repo = {
@@ -62,6 +62,12 @@ def main():
 # end
 
 
-if __name__ == '__main__':
-  main()
+def show_system_try():
+    system_tray = SystemTray()
+    system_tray.show()
+# end
+
+
+if (__name__ == '__main__'):
+    show_system_try()
 # end
