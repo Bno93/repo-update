@@ -39,15 +39,15 @@ else:
 
 # Where the magic happens:
 setup(
-  name=NAME,
-  version=about['__version__'],
-  desciption=DESCRIPTION,
-  author=AUTHOR,
-  author_email=EMAIL,
-  python_requires=REQUIRES_PYTHON,
-  url=URL,
-  packages=find_packages(exclude=('tests',)),
-  install_required=REQUIRED,
-  extra_require=EXTRAS,
-  include_package_data=True,
+    name=NAME,
+    version=about['__version__'],
+    desciption=DESCRIPTION,
+    author=AUTHOR,
+    author_email=EMAIL,
+    python_requires=REQUIRES_PYTHON,
+    url=URL,
+    packages=find_packages(exclude=('tests',)),
+    install_required=REQUIRED,
+    extra_require=EXTRAS,
+    include_package_data=True,
 )

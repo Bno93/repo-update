@@ -1,0 +1,72 @@
+""" UI Module """
+import sys
+import wx
+import webbrowser
+from ui import SystemTray
+from setting import Settings
+from updater import Updater
+from report import HtmlReport
+
+class UpdateFrame(wx.Frame):
+    """ dummy frame for the application """
+    def __init__(self, parent, id, title):
+        wx.Frame.__init__(self, parent, -1, title, size=(1,1),
+                          style=wx.FRAME_NO_TASKBAR | wx.NO_FULL_REPAINT_ON_RESIZE)
+        self.tb_icon = SystemTray(self)
+
+        self.tb_icon.Bind(wx.EVT_MENU, self.exit_app, id=wx.ID_EXIT)
+        self.Show(True)
+    # end
+
+
+    def update_repos(self, event):
+        """ update all confiured repos  """
+        settings = Settings()
+        updater = Updater()
+
+        loaded_settings = settings.load_settings()
+
+        update_ist = loaded_settings['toUpdate']
+        report = {
+            'repos': []
+        }
+        try:
+            for repo in update_ist:
+                if repo['enabled']:
+                    vcs = repo['vcs']
+                    result = updater.update(repo['label'],
+                                            repo['folder'], vcs, loaded_settings['execpath'])
+                    report['repos'].append(result)
+                else:
+                    repo = {
+                        'label': repo['label'],
+                        'path': repo['folder'],
+                        'status': 'disabled',
+                        'message': ["repo not enabled to update"]
+                    }
+                    report['repos'].append(repo)
+                # end
+            # end
+        except KeyboardInterrupt:
+            pass
+        # end
+        html_report = HtmlReport(report)
+
+        report_filename = 'report.html'
+
+        with open(settings.settings_dir + '\\' + report_filename, 'w') as report_file:
+            report_file.write(html_report.get_html_report())
+        # end
+        report_file = 'file:///' + settings.settings_dir + '\\' + report_filename
+        webbrowser.open_new_tab(report_file)
+        # input('Debug') # for debug use
+        # sys.exit(0)
+    # end
+
+    def exit_app(self, event):
+        """ exit app """
+        print("exit app")
+        self.tb_icon.RemoveIcon()
+        self.tb_icon.Destroy()
+        sys.exit(0)
+# end

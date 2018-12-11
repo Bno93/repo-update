@@ -1,2 +1,2 @@
 from ui.system_tray import SystemTray
-from ui.system_tray import UpdateFrame
+from ui.update_frame import UpdateFrame
