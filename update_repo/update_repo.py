@@ -5,11 +5,11 @@ import time
 
 from setting import Settings
 from updater import Updater
-from ui import SystemTray
+
 from report import HtmlReport
 from pprint import pprint
-
-
+from ui import UpdateFrame
+import wx
 # TODO
 # update status adequat feststellen und
 # SystemTray Ui fuer Windows https://stackoverflow.com/questions/9494739/how-to-build-a-systemtray-app-for-windows
@@ -63,11 +63,16 @@ def main():
 
 
 def show_system_try():
-    system_tray = SystemTray()
-    system_tray.show()
+    print("show app")
+    app = wx.App(False)
+    frame = UpdateFrame(None, -1, '')
+    frame.Show(False)
+
+    app.MainLoop()
 # end
 
 
-if (__name__ == '__main__'):
+if __name__ == '__main__':
+    print("Main called")
     show_system_try()
 # end

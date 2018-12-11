@@ -18,11 +18,12 @@ VERSION = None
 # What packages are required for this module to be executed?
 REQUIRED = [
     'yattag'
+    'wxPython'
 ]
 
 # What packages are optional?
 EXTRAS = {
- 
+
 }
 
 
