@@ -18,7 +18,6 @@ class UpdateFrame(wx.Frame):
         self.Show(True)
     # end
 
-
     def update_repos(self, event):
         """ update all confiured repos  """
         settings = Settings()
@@ -65,8 +64,10 @@ class UpdateFrame(wx.Frame):
 
     def exit_app(self, event):
         """ exit app """
-        print("exit app")
+        print("begin exit app")
         self.tb_icon.RemoveIcon()
         self.tb_icon.Destroy()
-        sys.exit(0)
+        print("exit to command line")
+        exit("exit")
+    # end
 # end

@@ -7,7 +7,7 @@ from setuptools import find_packages, setup, Command
 
 
 # Package meta-data.
-NAME = 'repo_updater'
+NAME = 'update_repo'
 DESCRIPTION = 'repository updater'
 URL = 'https://github.com/Bno93/repo-update.git'
 EMAIL = 'benno.schweikert@googlemail.com'

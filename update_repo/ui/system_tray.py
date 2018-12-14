@@ -15,7 +15,6 @@ class SystemTray(TaskBarIcon):
         self.system_icon = wx.Icon('update_repo\\res\\icon\\icon_white.png', wx.BITMAP_TYPE_PNG)
         self.SetIcon(self.system_icon, "update")
         self.create_menu()
-
     # end
 
     def create_menu(self):
@@ -25,7 +24,6 @@ class SystemTray(TaskBarIcon):
         self.menu = wx.Menu()
         self.menu.Append(UPDATE_ALL, "Update alle Repos")
         self.menu.Append(wx.ID_EXIT, "exit")
-
     # end
 
     def show_menu(self, event):

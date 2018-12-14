@@ -1,10 +1,11 @@
 import sys
 import os
 import subprocess
-
+import logging
 
 class Updater(object):
     def __init__(self):
+        logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(levelname)s - %(message)s', datefmt='%d-%m-%Y %H:%M:%S')
         pass
     # end
 
@@ -18,7 +19,7 @@ class Updater(object):
             'message': []
         }
 
-        print('\nupdating {} [{}]'.format(path, vcs['program']))
+        logging.info('updating {} [{}]'.format(path, vcs['program']))
 
         try:
             os.chdir(path)
@@ -48,7 +49,7 @@ class Updater(object):
                 elif 'Updating' in line or 'Updated to revision':
                     repo['status'] = "updating"
                 # end
-                sys.stdout.write(line)
+                logging.info(line)
 
                 line.replace('\n', '')
                 line.replace('\t', '')
