@@ -49,10 +49,10 @@ class Updater(object):
                 elif 'Updating' in line or 'Updated to revision':
                     repo['status'] = "updating"
                 # end
-                logging.info(line)
 
                 line.replace('\n', '')
                 line.replace('\t', '')
+                logging.info(line)
 
                 repo['message'].append(str(line))
             # end
