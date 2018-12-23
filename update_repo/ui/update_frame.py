@@ -3,6 +3,7 @@ import sys
 import wx
 import webbrowser
 from ui import SystemTray
+from ui import SettingsFrame
 from setting import Settings
 from updater import Updater
 from report import HtmlReport
@@ -10,12 +11,16 @@ from report import HtmlReport
 class UpdateFrame(wx.Frame):
     """ dummy frame for the application """
     def __init__(self, parent, id, title):
-        wx.Frame.__init__(self, parent, -1, title, size=(1,1),
+        wx.Frame.__init__(self, parent, -1, title, size=(1, 1),
                           style=wx.FRAME_NO_TASKBAR | wx.NO_FULL_REPAINT_ON_RESIZE)
         self.tb_icon = SystemTray(self)
 
         self.tb_icon.Bind(wx.EVT_MENU, self.exit_app, id=wx.ID_EXIT)
         self.Show(True)
+    # end
+
+    def show_settings(self, event):
+        SettingsFrame(self)
     # end
 
     def update_repos(self, event):
@@ -25,12 +30,12 @@ class UpdateFrame(wx.Frame):
 
         loaded_settings = settings.load_settings()
 
-        update_ist = loaded_settings['toUpdate']
+        update_list = loaded_settings['toUpdate']
         report = {
             'repos': []
         }
         try:
-            for repo in update_ist:
+            for repo in update_list:
                 if repo['enabled']:
                     vcs = repo['vcs']
                     result = updater.update(repo['label'],

@@ -5,6 +5,7 @@ from wx.adv import TaskBarIcon
 
 
 UPDATE_ALL = wx.NewId()
+SETTINGS = wx.NewId()
 
 
 class SystemTray(TaskBarIcon):
@@ -21,12 +22,15 @@ class SystemTray(TaskBarIcon):
         """ make context menu """
         self.Bind(adv.EVT_TASKBAR_RIGHT_UP, self.show_menu)
         self.Bind(wx.EVT_MENU, self.parent_app.update_repos, id=UPDATE_ALL)
+        self.Bind(wx.EVT_MENU, self.parent_app.show_settings, id=SETTINGS)
         self.menu = wx.Menu()
         self.menu.Append(UPDATE_ALL, "Update alle Repos")
+        self.menu.Append(SETTINGS, "Settings")
         self.menu.Append(wx.ID_EXIT, "exit")
     # end
 
     def show_menu(self, event):
+        """ makes context menu visible """
         self.PopupMenu(self.menu)
     # end
 # end
