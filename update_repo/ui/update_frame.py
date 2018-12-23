@@ -73,6 +73,6 @@ class UpdateFrame(wx.Frame):
         self.tb_icon.RemoveIcon()
         self.tb_icon.Destroy()
         print("exit to command line")
-        exit("exit")
+        sys.exit("exit")
     # end
 # end
