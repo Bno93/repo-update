@@ -1,7 +1,7 @@
 """ UI Module """
 import sys
-import wx
 import webbrowser
+import wx
 from ui import SystemTray
 from ui import SettingsFrame
 from setting import Settings
@@ -39,7 +39,7 @@ class UpdateFrame(wx.Frame):
                 if repo['enabled']:
                     vcs = repo['vcs']
                     result = updater.update(repo['label'],
-                                            repo['folder'], vcs, loaded_settings['execpath'])
+                                            repo['folder'], vcs)
                     report['repos'].append(result)
                 else:
                     repo = {

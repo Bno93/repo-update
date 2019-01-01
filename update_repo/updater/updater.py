@@ -4,12 +4,14 @@ import subprocess
 import logging
 
 class Updater(object):
+    """ class which handles the execution of the update command """
     def __init__(self):
-        logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(levelname)s - %(message)s', datefmt='%d-%m-%Y %H:%M:%S')
-        pass
+        logging.basicConfig(level=logging.INFO,
+                            format='[%(asctime)s] %(levelname)s - %(message)s',
+                            datefmt='%d-%m-%Y %H:%M:%S')
     # end
 
-    def update(self, label, path, vcs, exec_path):
+    def update(self, label, path, vcs):
         """ execute the vcs update command """
 
         repo = {
@@ -26,14 +28,13 @@ class Updater(object):
         except Exception:
             repo['status'] = "warning"
             repo['message'].append(['folder not found'])
-            os.chdir(exec_path)
             return repo
         # end
 
         cmd = ""
-        if(vcs['program'] == 'git'):
+        if vcs['program'] == 'git':
             cmd = vcs['program'] + " " + vcs['command']
-        elif(vcs['program'] == 'svn'):
+        elif vcs['program'] == 'svn':
             cmd = vcs['program'] + " " + vcs['command']
         # end
 
@@ -63,7 +64,6 @@ class Updater(object):
             print("stop updating")
             sys.exit(-2)
         # end
-        os.chdir(exec_path)
         return repo
 
     # end
