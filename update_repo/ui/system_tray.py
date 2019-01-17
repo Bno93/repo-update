@@ -2,6 +2,8 @@
 import wx
 from wx import adv
 from wx.adv import TaskBarIcon
+from util import utils
+
 
 
 UPDATE_ALL = wx.NewId()
@@ -13,10 +15,14 @@ class SystemTray(TaskBarIcon):
     def __init__(self, parent):
         TaskBarIcon.__init__(self)
         self.parent_app = parent
-        self.system_icon = wx.Icon('update_repo\\res\\icon\\icon_white.png', wx.BITMAP_TYPE_PNG)
+        icon_path = utils.get_resource_path('res\\icon\\icon_white.png')
+        print("Icon path from exe: {}".format(icon_path))
+        self.system_icon = wx.Icon(icon_path, wx.BITMAP_TYPE_PNG)
+        # self.system_icon = wx.Icon('update_repo\\res\\icon\\icon_white.png', wx.BITMAP_TYPE_PNG)
         self.SetIcon(self.system_icon, "update")
         self.create_menu()
     # end
+
 
     def create_menu(self):
         """ make context menu """

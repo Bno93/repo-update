@@ -60,7 +60,7 @@ class UpdateFrame(wx.Frame):
 
         with open(settings.settings_dir + '\\' + report_filename, 'w') as report_file:
             report_file.write(html_report.get_html_report())
-        # end
+        # html_report = HtmlReport(report)
         report_file = 'file:///' + settings.settings_dir + '\\' + report_filename
         webbrowser.open_new_tab(report_file)
         # input('Debug') # for debug use
