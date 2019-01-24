@@ -69,10 +69,8 @@ class UpdateFrame(wx.Frame):
 
     def exit_app(self, event):
         """ exit app """
-        print("begin exit app")
         self.tb_icon.RemoveIcon()
         self.tb_icon.Destroy()
-        print("exit to command line")
-        sys.exit("exit")
+        sys.exit(0)
     # end
 # end
