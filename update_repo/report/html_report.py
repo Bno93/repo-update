@@ -3,7 +3,7 @@ import time
 from yattag import Doc
 
 class HtmlReport(object):
-  
+
   def __init__(self, report):
 
     self.__doc, self.__tag, self.__text = Doc().tagtext()
@@ -15,11 +15,11 @@ class HtmlReport(object):
   def __create_html_page(self, report):
     self.__doc.asis('<!DOCTYPE html>')
     with self.__tag('html'):
-      self.__create_html_header()
+      self.__create_html_header(report)
       self.__create_html_body(report)
   # end
 
-  def __create_html_header(self):
+  def __create_html_header(self, report):
     with self.__tag('head'):
       with self.__tag('meta', charset='utf-8'):
           pass
@@ -49,10 +49,12 @@ class HtmlReport(object):
       # end
       with self.__tag('script'):
         self.__text('$(document).ready(function () {\n')
-        self.__text(
-            "$('.repo').on('shown.bs.collapse', function() {$('.glyphicon').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');});\n")
-        self.__text(
-            "$('.repo').on('hidden.bs.collapse', function() {$('.glyphicon').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');});\n")
+        for repo in report['repos']:
+          self.__text(
+              "$('#"+ self.__create_id(repo['label']) +"').on('shown.bs.collapse', function() {$('#"+ self.__create_chevron_id(repo['label']) +"').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');});\n")
+          self.__text(
+              "$('#"+ self.__create_id(repo['label']) +"').on('hidden.bs.collapse', function() {$('#"+ self.__create_chevron_id(repo['label']) +"').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');});\n")
+        # end
         self.__text('});')
       with self.__tag('style'):
           self.__text("#content{margin-left:10%;margin-right:10%;margin-top:1%;padding-left:10%;padding-right:10%;padding-top:1%;}\n")
@@ -75,7 +77,7 @@ class HtmlReport(object):
 
   # end
 
-  
+
   # private\mobilecomputing\mobilecomputing_programmentwurf
   def __create_id(self, name):
     html_id = str(name)
@@ -85,10 +87,21 @@ class HtmlReport(object):
     return html_id
   # end
 
+  def __create_chevron_id(self, name):
+    html_id = str(name)
+    html_id = html_id.replace(".", "")
+    html_id = html_id.replace("\\", "-")
+    html_id = html_id.replace(" ", "_")
+    return html_id + "-cheveron"
+
+  # end
+
   def __create_repo_panel_head(self, label, path):
     with self.__tag('div', klass='panel-heading'):
       self.__text(label)
-      with self.__tag('span', ("data-toggle", "collapse"), ("data-target", "#{}".format(self.__create_id(label))),  klass="glyphicon glyphicon-chevron-down"):
+      repo_id = self.__create_id(label)
+      cheveron_id = self.__create_chevron_id(label)
+      with self.__tag('span', ("data-toggle", "collapse"), ("data-target", "#{}".format(repo_id)), id=cheveron_id, klass="glyphicon glyphicon-chevron-down"):
         self.__text('')
       # end
     # end
@@ -96,7 +109,7 @@ class HtmlReport(object):
 
   def __create_repo_panel_body(self, label, message):
     with self.__tag('div', klass='panel-body repo collapse', id='{}'.format(self.__create_id(label))):
-     
+
       if type(message) is list:
         with self.__tag('ul', klass='list-group'):
           for line in message:
@@ -126,7 +139,7 @@ class HtmlReport(object):
             with self.__tag('span', ("data-toggle", "collapse"), ("data-target", "{}".format(".repo")), klass="glyphicon glyphicon-chevron-down"):
               self.__text('')
             # end
-        # end  
+        # end
         with self.__tag('div', klass='panel-body', id='content'):
           for repo in report['repos']:
             self.__create_repo_panel(repo)

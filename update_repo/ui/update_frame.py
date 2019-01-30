@@ -71,6 +71,6 @@ class UpdateFrame(wx.Frame):
         """ exit app """
         self.tb_icon.RemoveIcon()
         self.tb_icon.Destroy()
-        sys.exit(0)
+        sys.exit('exit')
     # end
 # end
