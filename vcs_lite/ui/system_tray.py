@@ -16,10 +16,11 @@ class SystemTray(TaskBarIcon):
         TaskBarIcon.__init__(self)
         self.parent_app = parent
         icon_path = utils.get_resource_path('res\\icon\\icon_white.png')
-        print("Icon path from exe: {}".format(icon_path))
+        updating_path = utils.get_resource_path('res\\icon\\updating.png')
         self.system_icon = wx.Icon(icon_path, wx.BITMAP_TYPE_PNG)
+        self.updating_icon = wx.Icon(updating_path, wx.BITMAP_TYPE_PNG)
         # self.system_icon = wx.Icon('update_repo\\res\\icon\\icon_white.png', wx.BITMAP_TYPE_PNG)
-        self.SetIcon(self.system_icon, "update")
+        self.set_icon()
         self.create_menu()
     # end
 
@@ -38,5 +39,13 @@ class SystemTray(TaskBarIcon):
     def show_menu(self, event):
         """ makes context menu visible """
         self.PopupMenu(self.menu)
+    # end
+
+    def set_icon(self, is_loading=False):
+
+        if(is_loading):
+            self.SetIcon(self.updating_icon, "updating")
+        else:
+            self.SetIcon(self.system_icon, "vcs-lite")
     # end
 # end

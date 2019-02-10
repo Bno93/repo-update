@@ -9,7 +9,6 @@ from ui import UpdateFrame
 
 def main():
     """ Main Function """
-    print("show app")
     app = wx.App(False)
     frame = UpdateFrame(None, -1, '')
     frame.Show(False)

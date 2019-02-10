@@ -8,7 +8,7 @@ class Settings(object):
     """ Settings class which provides read and save functions for the settings file """
     def __init__(self):
         self.settings_file = 'settings.json'
-        self.settings_dir = str(Path.home()) + '\\.repo-updater'
+        self.settings_dir = str(Path.home()) + '\\.vcs-lite'
         self.settings_default = {
             "toUpdate": [
                 {
