@@ -10,17 +10,27 @@ from report import HtmlReport
 
 class UpdateFrame(wx.Frame):
     """ dummy frame for the application """
+
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, -1, title, size=(1, 1),
                           style=wx.FRAME_NO_TASKBAR | wx.NO_FULL_REPAINT_ON_RESIZE)
         self.tb_icon = SystemTray(self)
 
         self.tb_icon.Bind(wx.EVT_MENU, self.exit_app, id=wx.ID_EXIT)
+        self.settings = Settings()
+        self.REPORT_FILENAME = 'report.html'
         self.Show(True)
     # end
 
     def show_settings(self, event):
         SettingsFrame(self)
+    # end
+
+
+    def show_report(self, event):
+        report_file = 'file:///' + self.settings.settings_dir + '\\' + self.REPORT_FILENAME
+        webbrowser.open_new_tab(report_file)
+
     # end
 
     def update_repos(self, event):
@@ -30,10 +40,10 @@ class UpdateFrame(wx.Frame):
         if self.tb_icon.IsIconInstalled:
             self.tb_icon.ShowBalloon("updating", "updating repos", 500)
         # end
-        settings = Settings()
+
         updater = Updater()
 
-        loaded_settings = settings.load_settings()
+        loaded_settings = self.settings.load_settings()
 
         update_list = loaded_settings['toUpdate']
         report = {
@@ -64,13 +74,13 @@ class UpdateFrame(wx.Frame):
         # end
         html_report = HtmlReport(report)
 
-        report_filename = 'report.html'
 
-        with open(settings.settings_dir + '\\' + report_filename, 'w') as report_file:
+
+        with open(self.settings.settings_dir + '\\' + self.REPORT_FILENAME, 'w') as report_file:
             report_file.write(html_report.get_html_report())
-        # html_report = HtmlReport(report)
-        report_file = 'file:///' + settings.settings_dir + '\\' + report_filename
-        webbrowser.open_new_tab(report_file)
+
+        self.show_report(event)
+
         # input('Debug') # for debug use
         # sys.exit(0)
     # end
