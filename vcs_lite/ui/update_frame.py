@@ -26,6 +26,10 @@ class UpdateFrame(wx.Frame):
     def update_repos(self, event):
         """ update all confiured repos  """
         self.tb_icon.set_icon(True)
+        self.tb_icon.disable_update_entry(True)
+        if self.tb_icon.IsIconInstalled:
+            self.tb_icon.ShowBalloon("updating", "updating repos", 500)
+        # end
         settings = Settings()
         updater = Updater()
 
@@ -55,6 +59,7 @@ class UpdateFrame(wx.Frame):
         except KeyboardInterrupt:
             pass
         finally:
+            self.tb_icon.disable_update_entry(False)
             self.tb_icon.set_icon(False)
         # end
         html_report = HtmlReport(report)

@@ -41,6 +41,11 @@ class SystemTray(TaskBarIcon):
         self.PopupMenu(self.menu)
     # end
 
+    def disable_update_entry(self, disable=False):
+        update_menu_item = self.menu.FindItemById(UPDATE_ALL)
+        if update_menu_item:
+            update_menu_item.Enable(not disable)
+
     def set_icon(self, is_loading=False):
 
         if(is_loading):
