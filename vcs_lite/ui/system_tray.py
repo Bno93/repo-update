@@ -35,7 +35,7 @@ class SystemTray(TaskBarIcon):
         self.Bind(wx.EVT_MENU, self.parent_app.show_settings, id=SETTINGS)
         self.menu = wx.Menu()
         self.menu.Append(UPDATE_ALL, "Update alle Repos")
-        self.menu.Append(SHOW_REPORT, "Show Report")
+        self.menu.Append(SHOW_REPORT, "Show last Report")
         self.menu.Append(SETTINGS, "Settings")
         self.menu.Append(wx.ID_EXIT, "Exit")
     # end
