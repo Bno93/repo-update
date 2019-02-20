@@ -27,6 +27,7 @@ class Updater(object):
         try:
             os.chdir(path)
         except Exception:
+            logging.error("could not find path to repository")
             repo['status'] = "warning"
             repo['message'].append(['folder not found'])
             return repo
@@ -41,6 +42,7 @@ class Updater(object):
 
         # message = []
         try:
+            logging.info("init subprocess")
             proc = subprocess.Popen(
                 cmd, universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             for line in proc.stdout:
@@ -60,10 +62,14 @@ class Updater(object):
             # end
         except subprocess.CalledProcessError as err:
             print("ERROR: " + err)
+            logging.error("error: " + err)
             sys.exit(-1)
         except KeyboardInterrupt:
             print("stop updating")
+            logging.warning("updating was cancled by CTR+C")
             sys.exit(-2)
+        finally:
+            logging.info("exit updater")
         # end
         return repo
 

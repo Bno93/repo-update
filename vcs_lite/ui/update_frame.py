@@ -37,9 +37,7 @@ class UpdateFrame(wx.Frame):
         """ update all confiured repos  """
         self.tb_icon.set_icon(True)
         self.tb_icon.disable_update_entry(True)
-        if self.tb_icon.IsIconInstalled:
-            self.tb_icon.ShowBalloon("updating", "updating repos", 500)
-        # end
+
 
         updater = Updater()
 
@@ -71,6 +69,9 @@ class UpdateFrame(wx.Frame):
         finally:
             self.tb_icon.disable_update_entry(False)
             self.tb_icon.set_icon(False)
+            if self.tb_icon.IsIconInstalled:
+                self.tb_icon.ShowBalloon("updated", "all repos are updated", 500)
+            # end
         # end
         html_report = HtmlReport(report)
 
