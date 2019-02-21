@@ -1,5 +1,6 @@
 """ UI Module """
 import sys
+import os
 import webbrowser
 import wx
 from ui import SystemTray
@@ -23,7 +24,8 @@ class UpdateFrame(wx.Frame):
     # end
 
     def show_settings(self, event):
-        SettingsFrame(self)
+        # SettingsFrame(self)
+        os.startfile(self.settings._get_sttings_path())
     # end
 
 
