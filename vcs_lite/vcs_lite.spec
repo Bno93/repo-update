@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['vcs_lite.py'],
-             pathex=['F:\\workspace\\private\\repo-update\\update_repo'],
+             pathex=['F:\\workspace\\private\\vcs-lite\\vcs_lite'],
              binaries=[],
              datas=[('res/icon/*', 'res/icon')],
              hiddenimports=[],
@@ -29,5 +29,5 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           runtime_tmpdir=None,
-          # console=False,
+          console=True,
           icon='res\\icon\\app.ico')
