@@ -2,11 +2,14 @@ import sys
 import os
 import subprocess
 import logging
+# import tempfile
+# sys.stdout = tempfile.TemporaryFile()
+# sys.stderr = tempfile.TemporaryFile()
 
 class Updater(object):
     """ class which handles the execution of the update command """
     def __init__(self):
-        logging.basicConfig(filename="update-repo.log",
+        logging.basicConfig(filename="vcs-lite.log",
                             level=logging.INFO,
                             format='[%(asctime)s] %(levelname)s - %(message)s',
                             datefmt='%d-%m-%Y %H:%M:%S')
@@ -43,12 +46,20 @@ class Updater(object):
         # message = []
         try:
             logging.info("init subprocess")
-            proc = subprocess.Popen(
-                cmd, universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            proc = subprocess.Popen(cmd, universal_newlines=True,
+                                    stdout=subprocess.PIPE,
+                                    stdin=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT,
+                                    startupinfo=startupinfo)
             for line in proc.stdout:
+                logging.info("exec update: {}".format(line))
                 if 'up to date' in line or 'At revision' in line:
                     repo['status'] = "upToDate"
                 elif 'conflict' in line:
+                    repo['status'] = 'conflict'
+                elif 'error' in line:
                     repo['status'] = 'conflict'
                 elif 'Updating' in line or 'Updated to revision':
                     repo['status'] = "updating"
@@ -61,14 +72,17 @@ class Updater(object):
                 repo['message'].append(str(line))
             # end
         except subprocess.CalledProcessError as err:
-            print("ERROR: " + err)
+            # print("ERROR: " + err)
             logging.error("error: " + err)
             sys.exit(-1)
         except KeyboardInterrupt:
-            print("stop updating")
+            # print("stop updating")
             logging.warning("updating was cancled by CTR+C")
             sys.exit(-2)
+        except Exception as e:
+            logging.error("something went wrong: {}".format(e))
         finally:
+
             logging.info("exit updater")
         # end
         return repo
