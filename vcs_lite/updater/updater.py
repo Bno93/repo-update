@@ -2,9 +2,7 @@ import sys
 import os
 import subprocess
 import logging
-# import tempfile
-# sys.stdout = tempfile.TemporaryFile()
-# sys.stderr = tempfile.TemporaryFile()
+
 
 class Updater(object):
     """ class which handles the execution of the update command """
