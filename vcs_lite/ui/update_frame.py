@@ -42,7 +42,7 @@ class UpdateFrame(wx.Frame):
 
 
         updater = Updater()
-
+        # check if settings could be laoded
         loaded_settings = self.settings.load_settings()
 
         if(not loaded_settings):
