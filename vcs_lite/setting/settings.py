@@ -1,6 +1,8 @@
 """ Handle the settings file  """
 import os
+import sys
 import json
+import logging
 
 from pathlib import Path
 
@@ -55,6 +57,9 @@ class Settings(object):
         except IOError:
             self.make_default_settings()
             return self.load_settings()
+        except json.JSONDecodeError as decode_error:
+            logging.error("couldn't parse settings {}({}:{})".format(self._get_sttings_path, decode_error.lineno, decode_error.colno))
+            return None
         # end
         return loaded_settings
     # end

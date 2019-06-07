@@ -7,10 +7,7 @@ import logging
 class Updater(object):
     """ class which handles the execution of the update command """
     def __init__(self):
-        logging.basicConfig(filename="vcs-lite.log",
-                            level=logging.INFO,
-                            format='[%(asctime)s] %(levelname)s - %(message)s',
-                            datefmt='%d-%m-%Y %H:%M:%S')
+        pass
     # end
 
     def update(self, label, path, vcs):

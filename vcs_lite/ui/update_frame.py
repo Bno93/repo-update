@@ -45,6 +45,9 @@ class UpdateFrame(wx.Frame):
 
         loaded_settings = self.settings.load_settings()
 
+        if(not loaded_settings):
+            wx.MessageBox("couldn't load settings", "Error", wx.OK | wx.ICON_ERROR)
+
         update_list = loaded_settings['toUpdate']
         report = {
             'repos': []
@@ -86,6 +89,11 @@ class UpdateFrame(wx.Frame):
 
         # input('Debug') # for debug use
         # sys.exit(0)
+    # end
+
+
+    def cancel_update(self, event):
+        raise KeyboardInterrupt
     # end
 
     def exit_app(self, event):
