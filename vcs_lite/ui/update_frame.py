@@ -54,17 +54,28 @@ class UpdateFrame(wx.Frame):
         }
         try:
             for repo in update_list:
-                if repo['enabled']:
-                    vcs = repo['vcs']
-                    result = updater.update(repo['label'],
-                                            repo['folder'], vcs)
-                    report['repos'].append(result)
-                else:
+                try:
+                    if repo['enabled']:
+                        vcs = repo['vcs']
+                        result = updater.update(repo['label'],
+                                                repo['folder'], vcs)
+                        report['repos'].append(result)
+                    else:
+                        repo = {
+                            'label': repo['label'],
+                            'path': repo['folder'],
+                            'status': 'disabled',
+                            'message': ["repo not enabled to update"]
+                        }
+                        report['repos'].append(repo)
+                    # end
+                except KeyError as ke:
+                    # wx.MessageBox("couldn't update  '{}' cause of typo in {} porperty".format(repo['label'], ke))
                     repo = {
                         'label': repo['label'],
                         'path': repo['folder'],
-                        'status': 'disabled',
-                        'message': ["repo not enabled to update"]
+                        'status': 'warning',
+                        'message': ["couldn't update  '{}' cause of typo in {} porperty".format(repo['label'], ke)]
                     }
                     report['repos'].append(repo)
                 # end
