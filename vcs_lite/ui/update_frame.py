@@ -27,7 +27,7 @@ class UpdateFrame(wx.Frame):
         # SettingsFrame(self)
         settings_path = self.settings.settings_dir
         if os.path.exists(settings_path):
-            os.startfile(settings_path)
+            os.startfile(self.settings._get_sttings_path())
         else:
             os.mkdir(settings_path)
             self.settings.load_settings()
