@@ -3,6 +3,7 @@ import sys
 import os
 import webbrowser
 import wx
+from wx.adv import NotificationMessage
 from ui import SystemTray
 from ui import SettingsFrame
 from setting import Settings
@@ -92,7 +93,13 @@ class UpdateFrame(wx.Frame):
             self.tb_icon.disable_update_entry(False)
             self.tb_icon.set_icon(False)
             if self.tb_icon.IsIconInstalled:
-                self.tb_icon.ShowBalloon("updated", "all repos are updated", 500)
+                notify  = NotificationMessage(title="update finished",
+                                              message="all repos are updated",
+                                              parent=self,
+                                              flags=wx.ICON_INFORMATION)
+                notify.Show(timeout=1)
+                notify.Close()
+                # self.tb_icon.ShowBalloon("updated", "all repos are updated", 500)
             # end
         # end
         html_report = HtmlReport(report)
