@@ -2,8 +2,9 @@
 import sys
 # import os
 import webbrowser
-import wx
 import logging
+import wx
+from wx.adv import NotificationMessage
 from ui import SystemTray
 # from ui import SettingsFrame
 from setting import Settings
@@ -30,8 +31,10 @@ class UpdateFrame(wx.Frame):
 
     def show_settings(self, event):
         # SettingsFrame(self)
+
         #os.startfile(self.settings._get_sttings_path())
         pass
+
     # end
 
 
@@ -60,17 +63,28 @@ class UpdateFrame(wx.Frame):
         }
         try:
             for repo in update_list:
-                if repo['enabled']:
-                    vcs = repo['vcs']
-                    result = updater.update(repo['label'],
-                                            repo['folder'], vcs)
-                    report['repos'].append(result)
-                else:
+                try:
+                    if repo['enabled']:
+                        vcs = repo['vcs']
+                        result = updater.update(repo['label'],
+                                                repo['folder'], vcs)
+                        report['repos'].append(result)
+                    else:
+                        repo = {
+                            'label': repo['label'],
+                            'path': repo['folder'],
+                            'status': 'disabled',
+                            'message': ["repo not enabled to update"]
+                        }
+                        report['repos'].append(repo)
+                    # end
+                except KeyError as ke:
+                    # wx.MessageBox("couldn't update  '{}' cause of typo in {} porperty".format(repo['label'], ke))
                     repo = {
                         'label': repo['label'],
                         'path': repo['folder'],
-                        'status': 'disabled',
-                        'message': ["repo not enabled to update"]
+                        'status': 'warning',
+                        'message': ["couldn't update  '{}' cause of typo in {} porperty".format(repo['label'], ke)]
                     }
                     report['repos'].append(repo)
                 # end
@@ -81,7 +95,13 @@ class UpdateFrame(wx.Frame):
             self.tb_icon.disable_update_entry(False)
             self.tb_icon.set_icon(False)
             if self.tb_icon.IsIconInstalled:
-                self.tb_icon.ShowBalloon("updated", "all repos are updated", 500)
+                notify  = NotificationMessage(title="update finished",
+                                              message="all repos are updated",
+                                              parent=self,
+                                              flags=wx.ICON_INFORMATION)
+                notify.Show(timeout=1)
+                notify.Close()
+                # self.tb_icon.ShowBalloon("updated", "all repos are updated", 500)
             # end
         # end
         html_report = HtmlReport(report)
