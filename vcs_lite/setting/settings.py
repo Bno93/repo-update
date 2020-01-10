@@ -1,6 +1,5 @@
 """ Handle the settings file  """
 import os
-import sys
 import json
 import logging
 
@@ -10,7 +9,7 @@ class Settings(object):
     """ Settings class which provides read and save functions for the settings file """
     def __init__(self):
         self.settings_file = 'settings.json'
-        self.settings_dir = str(Path.home()) + '\\.vcs-lite'
+        self.settings_dir = os.path.join(str(Path.home()), '.vcs-lite')
         self.settings_default = {
             "toUpdate": [
                 {
@@ -43,14 +42,16 @@ class Settings(object):
 
     # TODO use path join
     def _get_sttings_path(self):
-        return "{}\\{}".format(self.settings_dir, self.settings_file)
+        return os.path.join(self.settings_dir, self.settings_file)
     # end
 
     def load_settings(self):
         """ loads the settings file and create an empty one if file dosen't exists """
         loaded_settings = {}
         try:
+            logging.info("open {}".format(self._get_sttings_path()))
             with open(self._get_sttings_path(), 'r') as settings_file:
+
                 loaded_settings = json.load(settings_file)
             # end
 

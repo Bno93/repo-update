@@ -1,17 +1,26 @@
 """ main Script"""
 
-import wx
 import logging
+import wx
 from ui import UpdateFrame
+from ui import SystemTray
 
 # TODO
 # update status adequat feststellen und
 
+class App(wx.App):
+
+    def OnInit(self):
+        frame = wx.Frame(None) # UpdateFrame(None, -1, '')
+        self.SetTopWindow(frame)
+        SystemTray(frame)
+        return True
+
 def main():
     """ Main Function """
-    app = wx.App(False)
-    frame = UpdateFrame(None, -1, '')
-    frame.Show(False)
+    app = App(False)
+    # frame = UpdateFrame(None, -1, '')
+    # frame.Show(False)
     app.MainLoop()
 # end
 

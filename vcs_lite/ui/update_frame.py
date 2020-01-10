@@ -1,10 +1,11 @@
 """ UI Module """
 import sys
-import os
+# import os
 import webbrowser
 import wx
+import logging
 from ui import SystemTray
-from ui import SettingsFrame
+# from ui import SettingsFrame
 from setting import Settings
 from updater import Updater
 from report import HtmlReport
@@ -13,24 +14,29 @@ class UpdateFrame(wx.Frame):
     """ dummy frame for the application """
 
     def __init__(self, parent, id, title):
+
         wx.Frame.__init__(self, parent, -1, title, size=(1, 1),
                           style=wx.FRAME_NO_TASKBAR | wx.NO_FULL_REPAINT_ON_RESIZE)
         self.tb_icon = SystemTray(self)
 
+
         self.tb_icon.Bind(wx.EVT_MENU, self.exit_app, id=wx.ID_EXIT)
         self.settings = Settings()
-        self.REPORT_FILENAME = 'report.html'
-        self.Show(True)
+        self.report_filename = 'report.html'
+
+        logging.error("init UpdateFrame and show it")
+        # self.Show(True)
     # end
 
     def show_settings(self, event):
         # SettingsFrame(self)
-        os.startfile(self.settings._get_sttings_path())
+        #os.startfile(self.settings._get_sttings_path())
+        pass
     # end
 
 
     def show_report(self, event):
-        report_file = 'file:///' + self.settings.settings_dir + '\\' + self.REPORT_FILENAME
+        report_file = 'file:///' + self.settings.settings_dir + '\\' + self.report_filename
         webbrowser.open_new_tab(report_file)
 
     # end
@@ -82,7 +88,7 @@ class UpdateFrame(wx.Frame):
 
 
 
-        with open(self.settings.settings_dir + '\\' + self.REPORT_FILENAME, 'w') as report_file:
+        with open(self.settings.settings_dir + '\\' + self.report_filename, 'w') as report_file:
             report_file.write(html_report.get_html_report())
 
         self.show_report(event)
