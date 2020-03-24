@@ -47,13 +47,13 @@ class Updater(object):
         # message = []
         try:
             logging.info("init subprocess")
-            # startupinfo = subprocess.STARTUPINFO()
-            # startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
             proc = subprocess.Popen(cmd, universal_newlines=True,
                                     stdout=subprocess.PIPE,
                                     stdin=subprocess.PIPE,
-                                    stderr=subprocess.STDOUT)
-                                    # startupinfo=startupinfo)
+                                    stderr=subprocess.STDOUT,
+                                    startupinfo=startupinfo)
             output = str(proc.communicate())
 
             for line in output.split('\n'):
@@ -65,7 +65,7 @@ class Updater(object):
                     repo['status'] = 'conflict'
                 elif 'error' in line:
                     repo['status'] = 'conflict'
-                elif 'Updating' in line or 'Updated to revision':
+                elif 'Updating' in line or 'Updated to revision' in line:
                     repo['status'] = "updating"
                 else:
                     repo['status'] = 'unknown'

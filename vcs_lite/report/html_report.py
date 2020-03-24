@@ -87,6 +87,8 @@ class HtmlReport(object):
         html_id = html_id.replace(".", "")
         html_id = html_id.replace("\\", "-")
         html_id = html_id.replace(" ", "_")
+        html_id = html_id.replace("(", "")
+        html_id = html_id.replace(")", "")
         return html_id
     # end
 
@@ -95,6 +97,8 @@ class HtmlReport(object):
         html_id = html_id.replace(".", "")
         html_id = html_id.replace("\\", "-")
         html_id = html_id.replace(" ", "_")
+        html_id = html_id.replace("(", "")
+        html_id = html_id.replace(")", "")
         return html_id + "-cheveron"
 
     # end

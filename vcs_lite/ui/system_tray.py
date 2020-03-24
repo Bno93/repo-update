@@ -27,8 +27,10 @@ class SystemTray(TaskBarIcon):
         super(SystemTray, self).__init__()
         # vcs_lite/res/icon/icon_white.png
         self.report_filename = 'report.html'
-        icon_path = utils.get_resource_path(os.path.join('vcs_lite','res','icon','icon_white.png'))
-        updating_path = utils.get_resource_path(os.path.join('vcs_lite','res','icon','updating.png'))
+        # icon_path = utils.get_resource_path(os.path.join('vcs_lite','res','icon','icon_white.png'))
+        icon_path = utils.get_resource_path(os.path.join('res','icon','icon_white.png'))
+        # updating_path = utils.get_resource_path(os.path.join('vcs_lite','res','icon','updating.png'))
+        updating_path = utils.get_resource_path(os.path.join('res','icon','updating.png'))
         self.system_icon = wx.Icon(icon_path, wx.BITMAP_TYPE_PNG)
         self.updating_icon = wx.Icon(updating_path, wx.BITMAP_TYPE_PNG)
         # self.system_icon = wx.Icon('update_repo\\res\\icon\\icon_white.png', wx.BITMAP_TYPE_PNG)
@@ -73,7 +75,7 @@ class SystemTray(TaskBarIcon):
 
     def show_settings(self, event):
         # SettingsFrame(self)
-        #os.startfile(self.settings._get_sttings_path())
+        os.startfile(self.settings._get_sttings_path())
         pass
     # end
 

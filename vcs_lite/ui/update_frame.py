@@ -32,7 +32,7 @@ class UpdateFrame(wx.Frame):
     def show_settings(self, event):
         # SettingsFrame(self)
 
-        #os.startfile(self.settings._get_sttings_path())
+        os.startfile(self.settings._get_sttings_path())
         pass
 
     # end
