@@ -7,12 +7,12 @@ import logging
 class Updater(object):
     """ class which handles the execution of the update command """
     def __init__(self):
-        pass
+        self.updtodate = ['up to date', 'At revision', 'Bereits aktuell']
     # end
 
     def update(self, label, path, vcs):
         """ execute the vcs update command """
-        print("{} with {} at {}".format(label, vcs, path))
+        print("{} with {program} {command}".format(label, **vcs))
         repo = {
             'label': label,
             'path': path,
@@ -38,28 +38,26 @@ class Updater(object):
         # end
 
         cmd = [vcs['program'], vcs['command']]
-        # if vcs['program'] == 'git':
-        #     cmd = vcs['program'] + " " + vcs['command']
-        # elif vcs['program'] == 'svn':
-        #     cmd = vcs['program'] + " " + vcs['command']
-        # # end
 
-        # message = []
         try:
             logging.info("init subprocess")
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo = None
+
+            if sys.platform == "win32":
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
             proc = subprocess.Popen(cmd, universal_newlines=True,
                                     stdout=subprocess.PIPE,
                                     stdin=subprocess.PIPE,
                                     stderr=subprocess.STDOUT,
                                     startupinfo=startupinfo)
             output = str(proc.communicate())
-
-            for line in output.split('\n'):
-                print(line)
+            print("output: {}".format(output))
+            for line in output[0]:
+                # print(line)
                 logging.info("exec update: %s", line)
-                if 'up to date' in line or 'At revision' in line:
+                if line in self.updtodate:
                     repo['status'] = "upToDate"
                 elif 'conflict' in line:
                     repo['status'] = 'conflict'

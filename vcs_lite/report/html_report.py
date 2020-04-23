@@ -1,4 +1,3 @@
-import os
 import time
 from yattag import Doc
 
@@ -61,6 +60,7 @@ class HtmlReport(object):
                     "#content{margin-left:10%;margin-right:10%;margin-top:1%;padding-left:10%;padding-right:10%;padding-top:1%;}\n")
                 self.__text('span { float: right; }\n')
                 self.__text('#heading{ margin:2%; }\n')
+                self.__text('.text-overflow { text-overflow: ellipsis; overflow: hidden; }\n')
             # end
     # end
 
@@ -73,8 +73,6 @@ class HtmlReport(object):
             return 'panel-danger'
         if status == 'warning':
             return 'panel-warning'
-        if status == 'disabled':
-            return 'panel-default'
         else:
             return 'panel-default'
 
@@ -104,8 +102,8 @@ class HtmlReport(object):
     # end
 
     def __create_repo_panel_head(self, label, path):
-        with self.__tag('div', klass='panel-heading'):
-            self.__text(label)
+        with self.__tag('div', klass='panel-heading text-overflow'):
+            self.__text("{} ({})".format(label, path))
             repo_id = self.__create_id(label)
             cheveron_id = self.__create_chevron_id(label)
             with self.__tag('span', ("data-toggle", "collapse"), ("data-target", "#{}".format(repo_id)), id=cheveron_id, klass="glyphicon glyphicon-chevron-down"):
@@ -117,7 +115,9 @@ class HtmlReport(object):
     def __create_repo_panel_body(self, label, message):
         with self.__tag('div', klass='panel-body repo collapse', id='{}'.format(self.__create_id(label))):
 
+
             if type(message) is list:
+                print("message is a list: {}".format(message))
                 with self.__tag('ul', klass='list-group'):
                     for line in message:
                         with self.__tag('li', klass='list-group-item'):
