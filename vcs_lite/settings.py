@@ -5,7 +5,7 @@ import logging
 
 from pathlib import Path
 
-class Settings(object):
+class Settings():
     """ Settings class which provides read and save functions for the settings file """
     def __init__(self):
         self.settings_file = 'settings.json'
@@ -35,13 +35,12 @@ class Settings(object):
     # end
 
     def _set_settings(self, settings):
-        with open(self._get_sttings_path(), "w") as write_settings:
+        with open(self.get_sttings_path(), "w") as write_settings:
             json.dump(settings, write_settings, indent=4)
         # end
     # end
 
-    # TODO use path join
-    def _get_sttings_path(self):
+    def get_sttings_path(self):
         return os.path.join(self.settings_dir, self.settings_file)
     # end
 
@@ -49,8 +48,8 @@ class Settings(object):
         """ loads the settings file and create an empty one if file dosen't exists """
         loaded_settings = {}
         try:
-            logging.info("open {}".format(self._get_sttings_path()))
-            with open(self._get_sttings_path(), 'r') as settings_file:
+            logging.info('open %s', self.get_sttings_path())
+            with open(self.get_sttings_path(), 'r') as settings_file:
 
                 loaded_settings = json.load(settings_file)
             # end
@@ -59,7 +58,10 @@ class Settings(object):
             self.make_default_settings()
             return self.load_settings()
         except json.JSONDecodeError as decode_error:
-            logging.error("couldn't parse settings {}({}:{})".format(self._get_sttings_path, decode_error.lineno, decode_error.colno))
+            logging.error('couldn\'t parse settings %s(%s:%s)',
+                          self.get_sttings_path,
+                          decode_error.lineno,
+                          decode_error.colno)
             return None
         # end
         return loaded_settings
