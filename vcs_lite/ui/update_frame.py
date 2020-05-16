@@ -14,7 +14,7 @@ from report import HtmlReport
 class UpdateFrame(wx.Frame):
     """ dummy frame for the application """
 
-    def __init__(self, parent, id, title):
+    def __init__(self, parent, _id, title):
 
         wx.Frame.__init__(self, parent, -1, title, size=(1, 1),
                           style=wx.FRAME_NO_TASKBAR | wx.NO_FULL_REPAINT_ON_RESIZE)
@@ -38,7 +38,7 @@ class UpdateFrame(wx.Frame):
     # end
 
 
-    def show_report(self, event):
+    def show_report(self, _event):
         report_file = 'file:///' + self.settings.settings_dir + '\\' + self.report_filename
         webbrowser.open_new_tab(report_file)
 
@@ -54,7 +54,7 @@ class UpdateFrame(wx.Frame):
         # check if settings could be laoded
         loaded_settings = self.settings.load_settings()
 
-        if(not loaded_settings):
+        if not loaded_settings:
             wx.MessageBox("couldn't load settings", "Error", wx.OK | wx.ICON_ERROR)
 
         update_list = loaded_settings['toUpdate']
@@ -118,11 +118,11 @@ class UpdateFrame(wx.Frame):
     # end
 
 
-    def cancel_update(self, event):
+    def cancel_update(self, _event):
         raise KeyboardInterrupt
     # end
 
-    def exit_app(self, event):
+    def exit_app(self, _event):
         """ exit app """
         self.tb_icon.RemoveIcon()
         self.tb_icon.Destroy()
