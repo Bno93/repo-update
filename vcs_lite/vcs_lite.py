@@ -2,7 +2,7 @@
 
 import logging
 import wx
-from ui import SystemTray
+from gui import SystemTray
 
 
 class App(wx.App):
@@ -12,6 +12,8 @@ class App(wx.App):
         self.SetTopWindow(frame)
         SystemTray(frame)
         return True
+    # end
+# end
 
 def main():
     """ Main Function """
@@ -23,9 +25,9 @@ def main():
 if __name__ == '__main__':
     # setupt logging
     logging.basicConfig(filename="vcs-lite.log",
-                    level=logging.INFO,
-                    format='[%(asctime)s] %(levelname)s - %(message)s',
-                    datefmt='%d-%m-%Y %H:%M:%S')
+                        level=logging.INFO,
+                        format='[%(asctime)s] %(levelname)s - %(message)s',
+                        datefmt='%d-%m-%Y %H:%M:%S')
 
     main()
 # end
