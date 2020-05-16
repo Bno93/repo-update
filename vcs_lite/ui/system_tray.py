@@ -78,7 +78,6 @@ class SystemTray(TaskBarIcon):
         # SettingsFrame(self)
         if sys.platform == "win32":
             os.startfile(self.settings._get_sttings_path())
-        pass
     # end
 
 
