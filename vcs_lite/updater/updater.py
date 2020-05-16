@@ -52,9 +52,9 @@ class Updater(object):
                                     stdin=subprocess.PIPE,
                                     stderr=subprocess.STDOUT,
                                     startupinfo=startupinfo)
-            output = str(proc.communicate())
-            print("output: {}".format(output))
-            for line in output[0]:
+            # output = str(proc.communicate())
+            # print("output: {}".format(output))
+            for line in proc.stdout:
                 # print(line)
                 logging.info("exec update: %s", line)
                 if line in self.updtodate:
