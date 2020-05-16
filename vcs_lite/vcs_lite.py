@@ -2,11 +2,8 @@
 
 import logging
 import wx
-from ui import UpdateFrame
 from ui import SystemTray
 
-# TODO
-# update status adequat feststellen und
 
 class App(wx.App):
 
@@ -19,8 +16,6 @@ class App(wx.App):
 def main():
     """ Main Function """
     app = App(False)
-    # frame = UpdateFrame(None, -1, '')
-    # frame.Show(False)
     app.MainLoop()
 # end
 
