@@ -9,10 +9,10 @@ from wx.adv import TaskBarIcon
 from wx.adv import NotificationMessage
 
 
-from utils import utils
+import utils
 from updater import Updater
 from report import HtmlReport
-from setting import Settings
+from settings import Settings
 
 
 
@@ -159,9 +159,6 @@ class SystemTray(TaskBarIcon):
     # end
 # end
 
-
-
-""" UI Module """
 
 
 class RepoPanel(wx.Panel):
