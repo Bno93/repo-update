@@ -79,7 +79,7 @@ class SystemTray(TaskBarIcon):
     def show_settings(self, _event):
         # SettingsFrame(self)
         if sys.platform == "win32":
-            os.startfile(self.settings._get_sttings_path())
+            os.startfile(self.settings.get_sttings_path())
     # end
 
 
