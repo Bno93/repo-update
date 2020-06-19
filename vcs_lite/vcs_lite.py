@@ -16,6 +16,7 @@ class App(wx.App):
 def main():
     """ Main Function """
     app = App(False)
+    logging.info("start vcs lite")
     app.MainLoop()
 # end
 

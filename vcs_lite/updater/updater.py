@@ -7,12 +7,12 @@ import logging
 class Updater(object):
     """ class which handles the execution of the update command """
     def __init__(self):
-        self.updtodate = ['up to date', 'At revision', 'Bereits aktuell']
+        pass
     # end
 
     def update(self, label, path, vcs):
         """ execute the vcs update command """
-        print("{} with {program} {command}".format(label, **vcs))
+        logging.info("{} with {program} {command}".format(label, **vcs))
         repo = {
             'label': label,
             'path': path,
@@ -54,8 +54,15 @@ class Updater(object):
                                     startupinfo=startupinfo)
             for line in proc.stdout:
                 # print(line)
+                line.replace("\n", "")
                 logging.info("exec update: %s", line)
-                if line in self.updtodate:
+                if 'up to date' in line:
+                    repo['status'] = "upToDate"
+                elif 'At revision' in line:
+                    repo['status'] = "upToDate"
+                elif 'Bereits aktuell' in line:
+                    repo['status'] = "upToDate"
+                elif 'Already up to date.' in line:
                     repo['status'] = "upToDate"
                 elif 'conflict' in line:
                     repo['status'] = 'conflict'
