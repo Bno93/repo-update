@@ -27,11 +27,8 @@ class SystemTray(TaskBarIcon):
         super(SystemTray, self).__init__()
         # vcs_lite/res/icon/icon_white.png
         self.report_filename = 'report.html'
-        icon_path = None
-        updating_path = None
-        icon_path = utils.get_resource_path(os.path.join('res', 'icon', 'icon_white.png'))
-        updating_path = utils.get_resource_path(os.path.join('res', 'icon', 'updating.png'))
-
+        icon_path = utils.get_resource_path(os.path.join('vcs_lite', 'res', 'icon', 'icon_white.png'))
+        updating_path = utils.get_resource_path(os.path.join('vcs_lite', 'res', 'icon', 'updating.png'))
 
         self.system_icon = wx.Icon(icon_path, wx.BITMAP_TYPE_PNG)
         self.updating_icon = wx.Icon(updating_path, wx.BITMAP_TYPE_PNG)
