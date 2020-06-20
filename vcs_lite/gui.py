@@ -31,8 +31,13 @@ class SystemTray(TaskBarIcon):
         self.report_filename = 'report.html'
         icon_path = None
         updating_path = None
-        icon_path = utils.get_resource_path(os.path.join('res', 'icon', 'icon_white.png'))
-        updating_path = utils.get_resource_path(os.path.join('res', 'icon', 'updating.png'))
+        if sys.platform == "win32":
+            icon_path = utils.get_resource_path(os.path.join('res', 'icon', 'icon_white.png'))
+            updating_path = utils.get_resource_path(os.path.join('res', 'icon', 'updating.png'))
+        elif sys.platform == "linux":
+            icon_path = utils.get_resource_path(os.path.join('vcs_lite', 'res', 'icon', 'icon_white.png'))
+            updating_path = utils.get_resource_path(os.path.join('vcs_lite', 'res', 'icon', 'updating.png'))
+
 
 
         self.system_icon = wx.Icon(icon_path, wx.BITMAP_TYPE_PNG)
