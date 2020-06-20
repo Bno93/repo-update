@@ -1,11 +1,14 @@
 """ main Script"""
 
+import sys
 import logging
 import wx
+
 from gui import SystemTray
+from cli import Cli
 
 
-class App(wx.App):
+class Gui(wx.App):
 
     def OnInit(self):
         frame = wx.Frame(None) # UpdateFrame(None, -1, '')
@@ -17,10 +20,14 @@ class App(wx.App):
 
 def main():
     """ Main Function """
-    app = App(False)
+    app = Gui(False)
     app.MainLoop()
 # end
 
+def cli():
+    _cli = Cli()
+    _cli.execute()
+# end
 
 if __name__ == '__main__':
     # setupt logging
@@ -29,5 +36,8 @@ if __name__ == '__main__':
                         format='[%(asctime)s] %(levelname)s - %(message)s',
                         datefmt='%d-%m-%Y %H:%M:%S')
 
-    main()
+    if len(sys.argv) > 1:
+        cli()
+    else:
+        main()
 # end
