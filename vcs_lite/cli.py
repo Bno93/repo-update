@@ -1,8 +1,10 @@
+from tabulate import tabulate
+from __version__ import __version__
 
-
-from argparse import ArgumentParser
 from abc import ABC, abstractmethod
-
+from argparse import ArgumentParser
+from settings import Settings
+from updater import Updater
 
 def make_command(setup):
 
@@ -61,9 +63,11 @@ class Cli():
         self.parser = ArgumentParser("vcs-lite",
                                 "vcs-lite [COMMAND] [OPTION]", "cli for bulk updating repositories")
 
+        self.parser.add_argument('--version', action='version', version='%(prog)s {version}\n'.format(version=__version__))
         sub_parsers = self.parser.add_subparsers(dest="subcmd", help="commands")
 
         UpdateCmd(sub_parsers)
+        ListRepositories(sub_parsers)
     # end
 
 
@@ -76,8 +80,33 @@ class Cli():
         except Exception as e:
             self.parser.print_help()
             raise e
+        # end
+    # end
 # end
 
+class ListRepositories(Subcommand):
+    def __init__(self, subparser):
+        super().__init__(name="list", aliases=['u'],
+                         help='prints a list of all configured repositories', subparser=subparser)
+        self.settings = Settings()
+    # end
+
+    def setup(self, subparser):
+        super().setup(subparser)
+    # end
+
+    def execute(self, args):
+        loaded_settings = self.settings.load_settings()
+
+        if (not loaded_settings):
+            print("couldn't load settings")
+            return
+        # end
+
+        repos = [[item['label'], item['vcs']['program'], item['enabled']] for item in loaded_settings['toUpdate']]
+        headers = ['Repo', 'VCS', 'enabled']
+
+        print(tabulate(repos, headers=headers))
 
 
 class UpdateCmd(Subcommand):
@@ -91,6 +120,7 @@ class UpdateCmd(Subcommand):
     def setup(self, subparser):
         super().setup(subparser)
 
+        self.cmd_parser.add_argument('-v', '--verbose', action='store_true', help='print more infos')
         self.cmd_parser.add_argument('-r', '--repo', dest="repos", type=str, nargs='+',
                                      help="list of repos to update")
 
@@ -103,6 +133,9 @@ class UpdateCmd(Subcommand):
             for repo in args.repos:
                 print("*", repo)
             # end
+        else:
+            updater = Updater()
+            updater.update_all()
         # end
     # end
 # end
