@@ -27,10 +27,10 @@ class SystemTray(TaskBarIcon):
     def __init__(self, parent):
         self.parent_app = parent
         super(SystemTray, self).__init__()
-        # vcs_lite/res/icon/icon_white.png
         self.report_filename = 'report.html'
         icon_path = None
         updating_path = None
+
         if sys.platform == "win32":
             icon_path = utils.get_resource_path(os.path.join('res', 'icon', 'icon_white.png'))
             updating_path = utils.get_resource_path(os.path.join('res', 'icon', 'updating.png'))
@@ -101,42 +101,17 @@ class SystemTray(TaskBarIcon):
 
 
         updater = Updater()
-        # check if settings could be laoded
-        loaded_settings = self.settings.load_settings()
 
-        if(not loaded_settings):
-            wx.MessageBox("couldn't load settings", "Error", wx.OK | wx.ICON_ERROR)
-
-        update_list = loaded_settings['toUpdate']
-        report = {
-            'repos': []
-        }
         try:
-            for repo in update_list:
-                if repo['enabled']:
-                    vcs = repo['vcs']
-                    result = updater.update(repo['label'],
-                                            repo['folder'], vcs)
-                    report['repos'].append(result)
-                else:
-                    repo = {
-                        'label': repo['label'],
-                        'path': repo['folder'],
-                        'status': 'disabled',
-                        'message': ["repo not enabled to update"]
-                    }
-                    report['repos'].append(repo)
-                # end
-            # end
-        except KeyboardInterrupt:
+            report = updater.update_all()
+        except Exception:
             pass
-        finally:
-            self.disable_update_entry(False)
-            self.set_icon(False)
-            if self.IsIconInstalled:
-                self.ShowBalloon("updated", "all repos are updated", 500)
+
+        self.disable_update_entry(False)
+        self.set_icon(False)
+        if self.IsIconInstalled:
+            self.ShowBalloon("updated", "all repos are updated", 500)
             # end
-        # end
         html_report = HtmlReport(report)
 
 

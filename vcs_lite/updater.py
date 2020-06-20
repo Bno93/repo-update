@@ -2,13 +2,46 @@ import sys
 import os
 import subprocess
 import logging
-
+from settings import Settings
 
 class Updater(object):
     """ class which handles the execution of the update command """
     def __init__(self):
-        pass
+        self.settings = Settings()
     # end
+
+    def update_all(self):
+        # check if settings could be laoded
+        loaded_settings = self.settings.load_settings()
+
+        if(not loaded_settings):
+            logging.error("couldn't load settings")
+            raise IOError('not settings file')
+        # end
+
+        update_list = loaded_settings['toUpdate']
+        report = { 'repos': [] }
+        try:
+            for repo in update_list:
+                if repo['enabled']:
+                    vcs = repo['vcs']
+                    result = self.update(repo['label'],
+                                            repo['folder'], vcs)
+                    report['repos'].append(result)
+                else:
+                    repo = {
+                        'label': repo['label'],
+                        'path': repo['folder'],
+                        'status': 'disabled',
+                        'message': ["repo not enabled to update"]
+                    }
+                    report['repos'].append(repo)
+                # end
+            # end
+        except KeyboardInterrupt:
+            pass
+
+        # end
 
     def update(self, label, path, vcs):
         """ execute the vcs update command """
